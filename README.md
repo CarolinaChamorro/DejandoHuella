@@ -2,14 +2,14 @@
 ## Aplicación WEB :bulb: 
 ### Tema: DejandoHuella
 El programa debe contener : :notebook_with_decorative_cover:  \
--[x] DbContext. 
--[x] DbSet. 
--[x] Relaciones uno a muchos. 
--[x] Relaciones muchos a muchos. 
--[x] Personalización del modelo con el modelbuilder. 
--[x] Uso de Fluent API. 
--[x] Parametrización con Dataanotations. 
--[x] Migraciones. 
+-[x] DbContext.   
+-[x] DbSet.   
+-[x] Relaciones uno a muchos.   
+-[x] Relaciones muchos a muchos.   
+-[x] Personalización del modelo con el modelbuilder.  
+-[x] Uso de Fluent API.   
+-[x] Parametrización con Dataanotations.   
+-[x] Migraciones.   
 
 
 
