@@ -18,6 +18,3 @@ El programa debe contener : :notebook_with_decorative_cover:  \
 Volviendo a la aplicación de consolsa, esta consta de: \
 :point_right: - Consta de 11 clases. \
 :point_right: -Cada clase tiene de 3 a 4 metodos. \
-:point_right: -Tiene la asignación de roles \
-:point_right: -registro con correo SendGrid/Facebook/Google \
-:point_right: -Se inserta fotografia en los productos. 
