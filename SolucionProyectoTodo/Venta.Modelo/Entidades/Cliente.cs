@@ -16,5 +16,13 @@ namespace Venta.Modelo.Entidades
             Nombre = nombre;
             Apellido = apellido;
         }
+        public Cliente(string nombre, string apellido,string edad,string cedula,string correo)
+        {
+            Nombre = nombre;
+            Apellido = apellido;
+            Edad = edad;
+            CedulaIdentidad = cedula;
+            Correo = correo;
+        }
     }
 }

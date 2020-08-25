@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+using Venta.AccesoDatos;
 using Venta.Modelo;
 using Venta.Modelo.Entidades;
 
@@ -12,7 +12,7 @@ namespace Venta.Consola
         static void Main(string[] args)
         {
             //Clientes
-            var cliente1 = new Cliente("Vilma","Baidal");
+            var cliente1 = new Cliente("Vilma", "Baidal");
             var cliente2 = new Cliente("Daniela", "Carrillo");
             var cliente3 = new Cliente("Lisa", "Manoban");
             var cliente4 = new Cliente("Alejandra", "López");
@@ -22,7 +22,7 @@ namespace Venta.Consola
             var cliente8 = new Cliente("Anastasia", "Inglaterra");
 
             //Productos electrodomésticos
-            var produElectro1 = new ProductoElectrodomestico("SmartTv","LG", "Electronics 65UK6300PUE", 1048);
+            var produElectro1 = new ProductoElectrodomestico("SmartTv", "LG", "Electronics 65UK6300PUE", 1048);
             var produElectro2 = new ProductoElectrodomestico("Cocina", "Global", "ARU017", 271);
             var produElectro3 = new ProductoElectrodomestico("Lavadora", "Whirlpool", "WWI16BSHLA", 429);
             var produElectro4 = new ProductoElectrodomestico("Refrigeradora", "Indurama", "RI-780I", 846);
@@ -35,7 +35,7 @@ namespace Venta.Consola
             var produTecno5 = new ProductoTecnologico("Parlante", "Bose", "SoundLink", 99);
 
             var unicoInventario = new Inventario();
-            
+
             //Stock electrodoméstico
             unicoInventario.ContarStockProductoElectrodomestico(produElectro1);
             unicoInventario.ContarStockProductoElectrodomestico(produElectro2);
@@ -61,7 +61,7 @@ namespace Venta.Consola
             unicoInventario.ContarVentasElectrodomesticos(cliente8, produElectro2);
             unicoInventario.ContarVentasElectrodomesticos(cliente6, produElectro5);
             unicoInventario.ContarVentasElectrodomesticos(cliente4, produElectro4);
-            
+
 
             //Ventas Tecnologicas
             unicoInventario.ContarVentasTecnologicas(cliente4, produTecno1);
@@ -75,9 +75,9 @@ namespace Venta.Consola
             unicoInventario.ContarVentasTecnologicas(cliente2, produTecno2);
             unicoInventario.ContarVentasTecnologicas(cliente5, produTecno5);
             unicoInventario.ContarVentasTecnologicas(cliente3, produTecno4);
-            
+
             //valores
-            var valorElectro=unicoInventario.VentasElectrodomesticos;
+            var valorElectro = unicoInventario.VentasElectrodomesticos;
             var valorTecno = unicoInventario.VentasTecnologicas;
             var stockElectro = unicoInventario.StockElectrodomesticos;
             var stockTecno = unicoInventario.StockTecnologico;
@@ -96,7 +96,7 @@ namespace Venta.Consola
             ListaElectrodomestica.Add(produElectro4);
             ListaElectrodomestica.Add(produElectro5);
 
-            
+
             Console.WriteLine($"------------------------------------------------------");
             Console.WriteLine($"\tSimulación de Inventario de una empresa");
             Console.WriteLine($"------------------------------------------------------");
@@ -111,7 +111,7 @@ namespace Venta.Consola
             Console.WriteLine("\td - Productos tecnológicos en stock");
             //Respuestas
             var respuesta = Console.ReadLine();
-            if (respuesta=="a")//Venta de productos electrodomesticos + clientes
+            if (respuesta == "a")//Venta de productos electrodomesticos + clientes
             {
                 Console.WriteLine($"El cliente {cliente1.Nombre} {cliente1.Apellido} ha comprado {produElectro1.Nombre} {produElectro1.Marca} " +
                $"{produElectro1.Modelo} en {produElectro1.Costo}");
@@ -176,7 +176,7 @@ namespace Venta.Consola
                 }
                 Console.WriteLine($"Hay en stock {stockElectro} productos electrodoméstico");
             }
-            else if (respuesta=="d")
+            else if (respuesta == "d")
             {
                 foreach (ProductoTecnologico item in ListaTecnologica)
                 {
@@ -185,11 +185,57 @@ namespace Venta.Consola
                 Console.WriteLine($"Hay en stock {stockTecno} productos tecnológicos");
             }
 
-            
+            Console.WriteLine("Subiendo datos a la base");
+            using (var context = new ApplicationDbContext())
+            {
+                var clientes = new Cliente[]
+                {
+                new Cliente("Daniela", "Carrillo","20","1234679812","danielacarrillo@hotmail.com"),
+                new Cliente("Lisa", "Manoban","23","9823561823","lalisamanoban@gmail.com"),
+                new Cliente("Alejandra", "López","20","1823094578","alejandralopez@gmail.com"),
+                new Cliente("Lauren", "Jauregui","24","0912673489","laurenjauregui@gmail.com"),
+                new Cliente("Camila", "Cabello","23","0912783419","camilacabello@gmail.com"),
+                new Cliente("Paola", "Campos","23","1723909338","paola@gmail.com"),
+                new Cliente("Anastasia", "Inglaterra","20","1723981730","anastasia@gmail.com")
+               };
+                foreach (Cliente c in clientes)
+                {
+                    context.Add(c);
+                }
+                context.SaveChanges();
 
-           
-            
+                var electrodomesticos = new ProductoElectrodomestico[]
+                {
+                    new ProductoElectrodomestico("SmartTv", "LG", "Electronics 65UK6300PUE", 1048,"300 KW"),
+                    new ProductoElectrodomestico("Cocina", "Global", "ARU017", 271,"150 KW"),
+                    new ProductoElectrodomestico("Lavadora", "Whirlpool", "WWI16BSHLA", 429,"2000 KW"),
+                    new ProductoElectrodomestico("Refrigeradora", "Indurama", "RI-780I", 846,"0,350 KW"),
+                    new ProductoElectrodomestico("Campana extractora convencional", "Indurama", "CEI-75CRP", 145,"3000 KW")
+                };
+                foreach (ProductoElectrodomestico e in electrodomesticos)
+                {
+                    context.Add(e);
+                }
+                context.SaveChanges();
+
+                var tecnologicos = new ProductoTecnologico[]
+                {
+                   new ProductoTecnologico("SmartPhone", "Samsung", "S9", 530,"5,0'pulgadas","32gb","Android","4gb"),
+                   new ProductoTecnologico("SmartWatch", "Xiaomi", "BandS3", 30,"3,0'pulgadas","No tiene","Xiamoi","no tiene"),
+                   new ProductoTecnologico("SmartPhone", "Xiaomi", "Note8Pro", 230,"4,7'pulgadas","16gb","Android","3gb"),
+                   new ProductoTecnologico("AirPhones", "Apple", "AirPodsPro", 153,"4,5 X 1,64 cm","No tiene","No tiene","No tiene"),
+                   new ProductoTecnologico("Parlante", "Bose", "SoundLink", 99,"152 x 58 x 59 mm","No tiene","No tiene","No tiene")
+                };
+                foreach (ProductoTecnologico t in tecnologicos)
+                {
+                    context.Add(t);
+                }
+                context.SaveChanges();
+
+
+            }
 
         }
+
     }
 }

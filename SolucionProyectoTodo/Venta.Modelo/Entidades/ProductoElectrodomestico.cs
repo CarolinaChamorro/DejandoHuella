@@ -18,6 +18,14 @@ namespace Venta.Modelo.Entidades
             Modelo = modelo;
             Costo = costo;
         }
+        public ProductoElectrodomestico(string nombre, string marca, string modelo, float costo,string consumo)
+        {
+            Nombre = nombre;
+            Marca = marca;
+            Modelo = modelo;
+            Costo = costo;
+            ConsumoElectrico = consumo;
+        }
         public void VerListaElectro()
         {
             Console.WriteLine($"-- {this.Nombre} {this.Modelo} {this.Marca} tiene un costo de: {this.Costo}");
